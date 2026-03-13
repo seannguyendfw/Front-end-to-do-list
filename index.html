@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="TaskFlow - Ứng dụng quản lý công việc thông minh với phân quyền người dùng"/>
+  <title>TaskFlow — Đăng nhập</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles/main.css"/>
+  <link rel="stylesheet" href="styles/auth.css"/>
+</head>
+<body>
+  <!-- Background animated blobs -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="auth-container">
+    <!-- Logo -->
+    <div class="logo-section">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="10" fill="url(#logoGrad)"/>
+          <path d="M9 16.5L13.5 21L23 11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6366f1"/>
+              <stop offset="1" stop-color="#8b5cf6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <span class="logo-name">TaskFlow</span>
+    </div>
+
+    <!-- Auth Card -->
+    <div class="auth-card" id="authCard">
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="tab-btn active" id="loginTab" onclick="switchTab('login')">Đăng nhập</button>
+        <button class="tab-btn" id="registerTab" onclick="switchTab('register')">Đăng ký</button>
+        <div class="tab-indicator" id="tabIndicator"></div>
+      </div>
+
+      <!-- Login Form -->
+      <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+        <h1 class="form-title">Chào mừng trở lại 👋</h1>
+        <p class="form-subtitle">Đăng nhập để tiếp tục quản lý công việc của bạn</p>
+
+        <div class="form-group">
+          <label for="loginUsername">Tên đăng nhập</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M10 10a4 4 0 100-8 4 4 0 000 8zm0 2c-5.33 0-8 2.67-8 4v1h16v-1c0-1.33-2.67-4-8-4z" fill="currentColor"/>
+            </svg>
+            <input type="text" id="loginUsername" placeholder="Nhập tên đăng nhập" required autocomplete="username"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">Mật khẩu</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M10 1a4 4 0 00-4 4v2H5a2 2 0 00-2 2v8a2 2 0 002 2h10a2 2 0 002-2V9a2 2 0 00-2-2h-1V5a4 4 0 00-4-4zm-2 6V5a2 2 0 014 0v2H8z" fill="currentColor"/>
+            </svg>
+            <input type="password" id="loginPassword" placeholder="Nhập mật khẩu" required autocomplete="current-password"/>
+            <button type="button" class="toggle-pass" onclick="togglePassword('loginPassword', this)">
+              <svg viewBox="0 0 20 20" fill="none"><path d="M10 4C5.58 4 2 10 2 10s3.58 6 8 6 8-6 8-6-3.58-6-8-6zm0 10a4 4 0 110-8 4 4 0 010 8zm0-6a2 2 0 100 4 2 2 0 000-4z" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="loginError" class="error-msg hidden"></div>
+
+        <button type="submit" class="btn-primary" id="loginBtn">
+          <span>Đăng nhập</span>
+          <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+
+        <div class="demo-hint">
+          <p>👤 Demo: <strong>admin</strong> / <strong>admin123</strong></p>
+        </div>
+      </form>
+
+      <!-- Register Form -->
+      <form class="auth-form hidden" id="registerForm" onsubmit="handleRegister(event)">
+        <h1 class="form-title">Tạo tài khoản mới ✨</h1>
+        <p class="form-subtitle">Bắt đầu hành trình quản lý công việc của bạn</p>
+
+        <div class="form-group">
+          <label for="regFullname">Họ và tên</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M10 10a4 4 0 100-8 4 4 0 000 8zm0 2c-5.33 0-8 2.67-8 4v1h16v-1c0-1.33-2.67-4-8-4z" fill="currentColor"/>
+            </svg>
+            <input type="text" id="regFullname" placeholder="Nguyễn Văn A" required/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regUsername">Tên đăng nhập</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M2.5 6.5a2 2 0 012-2h11a2 2 0 012 2v7a2 2 0 01-2 2h-11a2 2 0 01-2-2v-7zm2-4a4 4 0 00-4 4v7a4 4 0 004 4h11a4 4 0 004-4v-7a4 4 0 00-4-4h-11z" fill="currentColor"/>
+            </svg>
+            <input type="text" id="regUsername" placeholder="ten_dang_nhap" required/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regPassword">Mật khẩu</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M10 1a4 4 0 00-4 4v2H5a2 2 0 00-2 2v8a2 2 0 002 2h10a2 2 0 002-2V9a2 2 0 00-2-2h-1V5a4 4 0 00-4-4zm-2 6V5a2 2 0 014 0v2H8z" fill="currentColor"/>
+            </svg>
+            <input type="password" id="regPassword" placeholder="Ít nhất 6 ký tự" required autocomplete="new-password"/>
+            <button type="button" class="toggle-pass" onclick="togglePassword('regPassword', this)">
+              <svg viewBox="0 0 20 20" fill="none"><path d="M10 4C5.58 4 2 10 2 10s3.58 6 8 6 8-6 8-6-3.58-6-8-6zm0 10a4 4 0 110-8 4 4 0 010 8zm0-6a2 2 0 100 4 2 2 0 000-4z" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regConfirm">Xác nhận mật khẩu</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M10 1a4 4 0 00-4 4v2H5a2 2 0 00-2 2v8a2 2 0 002 2h10a2 2 0 002-2V9a2 2 0 00-2-2h-1V5a4 4 0 00-4-4zm-2 6V5a2 2 0 014 0v2H8z" fill="currentColor"/>
+            </svg>
+            <input type="password" id="regConfirm" placeholder="Nhập lại mật khẩu" required autocomplete="new-password"/>
+          </div>
+        </div>
+
+        <div id="registerError" class="error-msg hidden"></div>
+        <div id="registerSuccess" class="success-msg hidden"></div>
+
+        <button type="submit" class="btn-primary" id="registerBtn">
+          <span>Tạo tài khoản</span>
+          <svg viewBox="0 0 20 20" fill="none"><path d="M10 5v10M5 10h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </form>
+    </div>
+
+    <p class="footer-text">© 2026 TaskFlow. Được xây dựng với ❤️</p>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
